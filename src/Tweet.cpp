@@ -144,7 +144,7 @@ while(getline(ifs,OneLine) )
 		i=log2(Size-1);		        // Find the most close 2^n for the size of the sorted array
 		n=pow(2,i);			          // n now is the number of elements in the first part
 	}
-	else if(Size==1)		        // if this element might be the second element in the sorted array.
+	else if(Size==1)		   // if this element might be the second element in the sorted array or might the same as last element in the sorted array or inserted after it .
 	{
 		n=0;
 	}
@@ -182,78 +182,75 @@ while(getline(ifs,OneLine) )
 		}
 	 else	// check if the ASCII order for this word is after the first word in the second part
 	   if(s.compare( (*(it+n)).GetWordString())>0    )
-			{
-				Size=Size-n;			// it is possible also that size of second array be one which means have only one element in the second array to compare with it.
-				if( i==0 || Size==1)		//// i will be zero when we have only two elements (i.e two parts and each one part contains only one unique word)
-				{	// If we find the correct position, then insert this Unique Word and update corresponding information
-					W1.UpdateNumberOfRepeating();
-					W1.UpdateLastTweetNumber(TotalNumberOfTweets);
-					myvector.insert(it+n+1,W1);
+		{
+			Size=Size-n;			// it is possible also that size of second array be one which means have only one element in the second array to compare with it.
+			if( i==0 || Size==1)		//// i will be zero when we have only two elements (i.e two parts and each one part contains only one unique word)
+			{	// If we find the correct position, then insert this Unique Word and update corresponding information
+				W1.UpdateNumberOfRepeating();
+				W1.UpdateLastTweetNumber(TotalNumberOfTweets);
+				myvector.insert(it+n+1,W1);
 
 
-					// This is a new unique word, see if this tweet unique words number has been inserted before or not to update it.
-					if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets)
+			// This is a new unique word, see if this tweet unique words number has been inserted before or not to update it.
+				if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets)
 						UniqueWordsPerEachTweet.push_back(1);
-					else if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets+1)
+				else if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets+1)
 						*(itPerTweet+TotalNumberOfTweets)=*(itPerTweet+TotalNumberOfTweets)+1;
-					break;
-				}
-
-				it=it+n;				// if we still did not reach to just one element per  each one part of the sorted arrays, but the word is found to be in the second part, then we work only in this second part move the iterator to its beginning
-				i=log2(Size-1);				// find most closest 2^n for the new size
-				n=pow(2,i);
-				continue;
+				break;
 			}
 
-		else
-		   if(s.compare( (*it).GetWordString())==0)		// if not found in any case above, it might be the same word at the beginning of the first divided part itself.
-			{
+			it=it+n;				// if we still did not reach to just one element per  each one part of the sorted arrays, but the word is found to be in the second part, then we work only in this second part move the iterator to its beginning
+			i=log2(Size-1);				// find most closest 2^n for the new size
+			n=pow(2,i);
+			continue;
+		}
 
-			   (*it).UpdateNumberOfRepeating();
+	else
+	   if(s.compare( (*it).GetWordString())==0)		// if not found in any case above, it might be the same word at the beginning of the first divided part itself.
+		{
+
+		   (*it).UpdateNumberOfRepeating();
 			 if((*it).GetLastTweetNumber()<TotalNumberOfTweets)   // if this word is the first unique word of itself in this tweet, Update the unique word number in this tweet.
-			   			{
-			   				(*it).UpdateLastTweetNumber(TotalNumberOfTweets);
-
-			   				//see if this tweet unique words number has been inserted before or not to update it.
-			   				if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets)
-			   						UniqueWordsPerEachTweet.push_back(1);
-			   				else if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets+1)
-			   						*(itPerTweet+TotalNumberOfTweets)=*(itPerTweet+TotalNumberOfTweets)+1;
-			   			}
-			   break;
- 			}
-		   else
-			   if(s.compare( (*(it+n)).GetWordString())==0)	// if not found in any case above, it might be the same word at the beginning of the second divided part itself.
-				{
-				   (*(it+n)).UpdateNumberOfRepeating();
-				 if((*(it+n)).GetLastTweetNumber()<TotalNumberOfTweets)		// if this word is the first unique word of itself in this tweet, Update the unique word number in this tweet.
-				   			{
-					   	   	   (*(it+n)).UpdateLastTweetNumber(TotalNumberOfTweets);
+			{
+   				(*it).UpdateLastTweetNumber(TotalNumberOfTweets);
+  				//see if this tweet unique words number has been inserted before or not to update it.
+			   	if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets)
+			   		UniqueWordsPerEachTweet.push_back(1);
+			   	else if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets+1)
+			   		*(itPerTweet+TotalNumberOfTweets)=*(itPerTweet+TotalNumberOfTweets)+1;
+			  }
+		   break;
+ 		}
+	 else
+	   if(s.compare( (*(it+n)).GetWordString())==0)	// if not found in any case above, it might be the same word at the beginning of the second divided part itself.
+		{
+		   (*(it+n)).UpdateNumberOfRepeating();
+		     if((*(it+n)).GetLastTweetNumber()<TotalNumberOfTweets)		// if this word is the first unique word of itself in this tweet, Update the unique word number in this tweet.
+			{
+		   	   (*(it+n)).UpdateLastTweetNumber(TotalNumberOfTweets);
 					   	   	  
+   	   	   // see if this tweet unique words number has been inserted before or not to update it.
+   	   			if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets)
+   					UniqueWordsPerEachTweet.push_back(1);
+   	   			else if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets+1)
+   					*(itPerTweet+TotalNumberOfTweets)=*(itPerTweet+TotalNumberOfTweets)+1;
+   			}
+		   break;
+	       }
+	  else		//If not found in the first part or second part, It is possible that the ASCII order for this word is before any word in the whole array, check for that
+	   if(s.compare( (*it).GetWordString())<0)		// we compare it with the first word at all in the sorted array
+		{
+		   W1.UpdateNumberOfRepeating();
+		   W1.UpdateLastTweetNumber(TotalNumberOfTweets);
+		   myvector.insert(it,W1);
 
-
-					   	   	   // see if this tweet unique words number has been inserted before or not to update it.
-					   	   			if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets)
-					   	   					UniqueWordsPerEachTweet.push_back(1);
-					   	   			else if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets+1)
-					   	   					*(itPerTweet+TotalNumberOfTweets)=*(itPerTweet+TotalNumberOfTweets)+1;
-				   			}
-				   break;
-			    }
-			  else		//If not found in the first part or second part, It is possible that the ASCII order for this word is before any word in the whole array, check for that
-					   if(s.compare( (*it).GetWordString())<0)		// we compare it with the first word at all in the sorted array
-					   {
-						   W1.UpdateNumberOfRepeating();
-						   W1.UpdateLastTweetNumber(TotalNumberOfTweets);
-						   myvector.insert(it,W1);
-
-						   // This is a new unique word, see if this tweet unique words number has been inserted before or not to update it.
-						   if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets)
-							   UniqueWordsPerEachTweet.push_back(1);
-						   	else if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets+1)
-						   		*(itPerTweet+TotalNumberOfTweets)=*(itPerTweet+TotalNumberOfTweets)+1;
-						   break;
-					   }
+		  // This is a new unique word, see if this tweet unique words number has been inserted before or not to update it.
+			 if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets)
+				 UniqueWordsPerEachTweet.push_back(1);
+			else if(UniqueWordsPerEachTweet.size()==TotalNumberOfTweets+1)
+				*(itPerTweet+TotalNumberOfTweets)=*(itPerTweet+TotalNumberOfTweets)+1;
+			break;
+		}
 
 
 	}// END of one while loop to check the two parts we divided  of the sorted array, move to the next until we find the proper position for the word or find it was repeated.
