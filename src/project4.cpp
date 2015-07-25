@@ -23,8 +23,7 @@ using namespace std;
 int main() {
 
 		Tweet T1;		// Tweet is a class contains the required process to be done with a complete Tweet file
-		string s;		// string to hold each word alone and analyze it
-	
+		
 	// Connect to the input file to start reading the tweets
 	// we can change the directory for the input file by changing tweet_input above before the main() .
 		std::string input_file;
