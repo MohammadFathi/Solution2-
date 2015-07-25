@@ -1,0 +1,9 @@
+tweet_input directory is "C"   
+tweet_output directory is "C"   
+file tweets.txt is at ("C:\tweets.txt").  
+files ft1.txt and ft2.txt will be created as ("C:\ft1.txt") and ("C:\ft2.txt").
+
+We still can modify them easily in main_project.cpp at the top of this file at code lines as next:
+
+#define tweet_input  "C"
+#define tweet_output  "C"
