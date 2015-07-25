@@ -6,9 +6,9 @@
 using namespace std;
 #include <string>
 #include <vector>
-#include<cmath>
-#include<fstream>
-#include<iomanip>
+#include <cmath>
+#include <fstream>
+#include <iomanip>
 
 
 Tweet::Tweet() {
