@@ -94,6 +94,10 @@ while(getline(ifs,OneLine) )
 	else			// if the word is not the first word in the tweet, do here
 	{
 		Size= myvector.size();			// get the size of the whole unique words saved before in myvector array of words
+		
+		// For each time we analyzed one word, we need to update again both of it and itPerTweet because maybe with increasing size of the two vectors
+		// myvector and UniqueWordsPerEachTweet , their positions in the memory might change to accomodate this increasing in size.
+		// So, we need to update it and itPerTweet about the new positions in the memory continuously after analyizing each word.
 		it=myvector.begin();			// iterator at the beginning to start finding out if the current new word has been inserted before or not and to update all the corresponding elements
 		itPerTweet=UniqueWordsPerEachTweet.begin();
 
