@@ -45,9 +45,9 @@ void Tweet::Update(string FileLocation)	{
 	}
 
 	string OneLine,s;		// this string to save one tweet (one line from the file)
-	size_t pos1,pos2 ;	// these tow size_t to convert each tweet to separate words and work for each word alone.
-	long i,n;
-	Unique_Word W1;		// Craeate one object of the Unique_Word to start our analysis.
+	size_t pos1,pos2 ;		// these tow size_t to convert each tweet to separate words and work for each word alone.
+	long i,n;			// two variables to divide our sorted array of words.
+	Unique_Word W1;			// Craeate one object of the Unique_Word to start our analysis.
 
 
 
@@ -101,7 +101,7 @@ while(getline(ifs,OneLine) )
 
 
 
-/*	Now, at least we have two sorted elements in the myvector sorted array. What we will do in the next, is to take each new word and compare
+/*	Now, at least we have first element or the first two elements in the myvector sorted array. What we will do in the next, is to take each new word and compare
  * with the already inserted boundary elements to see if it was inserted before or not.
  * We need to speed up the way of finding if there is same word inserted before or not, or to find the corresponding position if this is a new word.
  *
