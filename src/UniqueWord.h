@@ -1,4 +1,5 @@
 
+
 #ifndef UNIQUEWORD_H_
 #define UNIQUEWORD_H_
 #include<string>
@@ -8,9 +9,9 @@ using namespace std;
 
 
 class Unique_Word {
-	string WordString;				  // the word string itself.
+	string WordString;				// the word string itself.
 	long NumberOfRepeating;			// How many times were this word repeated in the whole tweets.txt file up to now.
-	long LastTweetNumber;		    // Last tweet number we found this word during our analysis, if not found before it will be initially zero.
+	long LastTweetNumber;		// Last tweet number we found this word during our analysis, if not found before it will be initially zero.
 
 public:
 	Unique_Word();
@@ -20,6 +21,7 @@ public:
 	long GetNumberOfRepeating();
 	long GetLastTweetNumber();
 	string GetWordString();
+	void Clean();
 	~Unique_Word();
 };
 
