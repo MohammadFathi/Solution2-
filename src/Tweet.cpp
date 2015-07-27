@@ -73,8 +73,6 @@ while(getline(ifs,OneLine) )
 
 			i=0;n=0;
 			W1.Clean();		// Clear all values in W1
-			itPerTweet=UniqueWordsPerEachTweet.begin();
-
 			W1.UpdateWordString(s);		// Load the new string inside the created object
 
 
@@ -97,7 +95,7 @@ while(getline(ifs,OneLine) )
 	{
 		Size= myvector.size();			// get the size of the whole unique words saved before in myvector array of words
 		it=myvector.begin();			// iterator at the beginning to start finding out if the current new word has been inserted before or not and to update all the corresponding elements
-
+		itPerTweet=UniqueWordsPerEachTweet.begin();
 
 
 
