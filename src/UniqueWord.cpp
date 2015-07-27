@@ -43,6 +43,13 @@ string Unique_Word::GetWordString(){
 }
 
 
+void Unique_Word::Clean(){
+		 WordString="";
+		 NumberOfRepeating=0;
+		 LastTweetNumber=0;
+
+}
+
 
 
 Unique_Word::~Unique_Word() {
