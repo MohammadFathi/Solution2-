@@ -1,5 +1,4 @@
 
-
 #include "Tweet.h"
 #include "UniqueWord.h"
 #include <iostream>
@@ -19,6 +18,14 @@ Tweet::Tweet() {
 
 
 
+
+
+
+
+
+
+
+
 /*
  * Update() function will take the input_file location and connect to it to process the words,
  * Will work to find if this word a new word or we have analyzed before, and accordingly, update
@@ -27,13 +34,7 @@ Tweet::Tweet() {
  *
  */
 
-/*
-* Here , we transfered the whole process of connecting to the inout file inside the Update() function itself to make processing
-* more faster.
-* Will connect the imput_file and take complete one tweet per each time, and then divide to separate words and deal with, 
-* That is faster than connecting the input_file for each one word in the file. 
-*
-*/
+
 
 void Tweet::Update(string FileLocation)	{
 
@@ -43,16 +44,16 @@ void Tweet::Update(string FileLocation)	{
 		cout<<"File is not opened";
 	}
 
-	string OneLine,s;		//OneLine string to save one tweet (one line from the file). s  is string for one word.
+	string OneLine,s;		// this string to save one tweet (one line from the file)
 	size_t pos1,pos2 ;	// these tow size_t to convert each tweet to separate words and work for each word alone.
-	
+	long i,n;
+	Unique_Word W1;		// Craeate one object of the Unique_Word to start our analysis.
+
 
 
 while(getline(ifs,OneLine) )
 {
 
-	 /////NumberOfTweet=(*this).GetNmberOfTweets();
-	 
 
 	// for each one loop, We will first read one tweet and separate it to different words to  analyze each word
 	OneLine.append(" ");
@@ -67,9 +68,11 @@ while(getline(ifs,OneLine) )
 			pos2= OneLine.find(" ");	// update pos2 to point to the first space in the new OneLine string
 
 // Now, for each word, we will work to analyze it.
-				
-			long i=0,n=0;
-			Unique_Word W1;		// Craeate one object of the Unique_Word to start our analysis.
+
+
+
+			i=0;n=0;
+			W1.Clean();		// Clear all values in W1
 			itPerTweet=UniqueWordsPerEachTweet.begin();
 
 			W1.UpdateWordString(s);		// Load the new string inside the created object
@@ -87,36 +90,30 @@ while(getline(ifs,OneLine) )
 		// This is first word in the tweet , so it was not inserted before in myvector array, insert it with its relevant information.
 		myvector.push_back(W1);
 
-	  continue;               // after processing the first word, continue the looping to work with the next words in the input file.
+	continue;
 	}
 
 	else			// if the word is not the first word in the tweet, do here
 	{
-		Size= myvector.size();			// get the size of the whole unique sorted words saved before in myvector array of words
+		Size= myvector.size();			// get the size of the whole unique words saved before in myvector array of words
 		it=myvector.begin();			// iterator at the beginning to start finding out if the current new word has been inserted before or not and to update all the corresponding elements
 
 
 
 
-/*	Now, at least we have one element in the myvector sorted array. What we will do in the next, is to take each new word and compare
+/*	Now, at least we have two sorted elements in the myvector sorted array. What we will do in the next, is to take each new word and compare
  * with the already inserted boundary elements to see if it was inserted before or not.
  * We need to speed up the way of finding if there is same word inserted before or not, or to find the corresponding position if this is a new word.
  *
  * What is done here , I try to divide the sorted array to two parts:
  * - The first part is 2^n elements
- * - The second part is the rest of elements in the sorted array (Size - 2^n) or just one element (one element happens when n=0)
- 
- * The main idea is to try to decrease the size of each part until reaching just one element per each part and so comparison will be 
- * precise to know where exactly should be the position of this new word if it was not inserted before.
- * During searching process, we might find the word inserted before, in this case, we just update the relevant word in the sorted array.
- * 
- 
- * I created the first part of 2^n because it can be faster to decrease 2^n positions to reach 2^0 which is two elements in the
- * array or two elements in the first part and just one element in the second part.
+ * - The second part is the rest of elements in the sorted array (Size - 2^n)
+ *
+ * I created the first part of 2^n because it can be faster to allocate the position for the word in case we find it should be here
  * I found that accessing array with 2^n elements will be more practical and faster
- If it is not found to be included in this first 2^n part at all, then I leave it completely for this word and move my iterator at the beginning of the second part
+ * If it is not found to be included in this first 2^n part at all, then I leave it completely for this word and move my iterator at the beginning of the second part
 	Then, I repeat what I have done above , divide this second part to new two parts one with 2^n and one with the rest element, where n here is less than the one before of course.
-	And repeat the checking and division until we decrease our sorted array part to only two consequent elements or only one element in the second part. 
+	And repeat the checking and division until we decrease our sorted array part to only two consequent elements.
 	With those two consequent elements , we can find the right position for our word or if it was inserted before.
 
 	n is the largest number that satisfy 2^n is closest number of number 2^n multipliers to be close to the size value
@@ -135,25 +132,27 @@ while(getline(ifs,OneLine) )
 	Then, if the alphabetic order for this word is not between them then the word should not be there, it should be somewhere in the second part.
 
 	Also, it might be possible that the word is before even the first word in the sorted array, we check for this case after checking the two boundaries (beginning for the two divided parts)
-	\Also, it might be repeated before at the two boundaries beginnings, so if it is at the first element of first part or first element of the second part
+	\Alo, it might be repeated before at the two boundaries beginnings, so if it is at the first element of first part or first element of the second part
 	that we check at each beginning of our looping, we can then update the element and quit the searching process to speed up the process.
 
+
 	*/
+
+
+
+
 	if(Size>1)
 	{
-		i=log2(Size-1);		        // Find the most close 2^n for the size of the sorted array
-		n=pow(2,i);			          // n now is the number of elements in the first part
+		i=log2(Size-1);		// Find the most close 2^n for the size of the sorted array
+		n=pow(2,i);			// n now is the number of elements in the first part
 	}
-	else if(Size==1)		   // if this element might be the second element in the sorted array or might the same as last element in the sorted array or inserted after it .
-	{
-		n=0;
-	}
+
 	
 	while(Size>0)
 	{
 
 		// Check if the ASCII for this word is between first word in first part and first word of the second part
-		if( (s.compare((*it).GetWordString())>0 ) &&   (s.compare((*(it+n)).GetWordString())<0)   )
+	if( (s.compare((*it).GetWordString())>0 ) &&   (s.compare((*(it+n)).GetWordString())<0)   )
 		{
 
 			if(i==0)					// i will be zero when we have only two elements (i.e two parts and each one part contains only one unique word)
@@ -261,7 +260,7 @@ while(getline(ifs,OneLine) )
 
 } //End of analyzing one word in one tweet, move to the next word in the same line until finish it.
 
-				//(*this).UpdateNumberOfTweets();		// update number of tweets we analyzed
+			
 		TotalNumberOfTweets++;
 } // End of the while loop for the one line. move to the next tweet,
 
@@ -322,8 +321,8 @@ void Tweet::f2(string FileLocation)
 				// The average of the two numbers saved in those two tweets Unique Words Number is the median for this array up to now.
 
 
-				for (vector<long>::iterator it2=UniqueWordsPerEachTweet.begin();it2!=UniqueWordsPerEachTweet.end();it2++)
-				{
+			for (vector<long>::iterator it2=UniqueWordsPerEachTweet.begin();it2!=UniqueWordsPerEachTweet.end();it2++)
+			{
 
 				// For each time we move to add new tweet to our array, begin at the first element to be able to reach the corresponding elements later.
 				it=UniqueWordsPerEachTweet.begin();
@@ -346,11 +345,7 @@ void Tweet::f2(string FileLocation)
 
 					Size1++;		// Update the number of tyweets we are going to check and consider.
 			}		// end of one loop, move to the next.
-					/*
-				for (vector<long>::iterator it2=UniqueWordsPerEachTweet.begin();it2!=UniqueWordsPerEachTweet.end();it2++)
-								{
-					cout<< *it2<<endl;
-								}*/
+				
 
 					ofs.close();
 
