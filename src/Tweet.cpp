@@ -46,7 +46,7 @@ void Tweet::Update(string FileLocation)	{
 
 	string OneLine,s;		// this string to save one tweet (one line from the file)
 	size_t pos1,pos2 ;		// these tow size_t to convert each tweet to separate words and work for each word alone.
-	long i,n;			// two variables to divide our sorted array of words.
+	long i=0,n=0;			// two variables to divide our sorted array of words.
 	Unique_Word W1;			// Craeate one object of the Unique_Word to start our analysis.
 
 
@@ -70,8 +70,6 @@ while(getline(ifs,OneLine) )
 // Now, for each word, we will work to analyze it.
 
 
-
-			i=0;n=0;
 			W1.Clean();		// Clear all values in W1
 			W1.UpdateWordString(s);		// Load the new string inside the created object
 
